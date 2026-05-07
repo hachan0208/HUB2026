@@ -1,0 +1,176 @@
+export const DETAIL_COLUMNS = [
+  { key: "center", label: "L07", type: "text" as const },
+  { key: "employeeId", label: "ID Number", type: "text" as const, headerClassName: "leading-[16.4px]" },
+  { key: "fullName", label: "Full Name", type: "text" as const },
+  { key: "maAE", label: "Mã AE", type: "text" as const, hidden: true },
+  { key: "date", label: "Date", type: "text" as const },
+  { key: "taskType", label: "Type", type: "text" as const },
+  { key: "classCode", label: "Class", type: "text" as const },
+  { key: "from", label: "From", type: "text" as const },
+  { key: "to", label: "To", type: "text" as const },
+  { key: "duration", label: "Duration", type: "number" as const },
+  { key: "workingHours", label: "Quy ra số giờ làm", type: "number" as const },
+  { key: "notes", label: "Notes", type: "text" as const },
+];
+
+export const BASE_TASK_COLUMNS = [
+  { key: "inClass", label: "In-class", type: "number" as const },
+  { key: "inClassAtls", label: "In-class ATLS", type: "number" as const },
+  { key: "demo", label: "Demo", type: "number" as const },
+  { key: "tutoring", label: "Tutoring", type: "number" as const },
+  { key: "waitingClass", label: "Waiting class", type: "number" as const },
+  { key: "clubActivity", label: "Club activity", type: "number" as const },
+  { key: "parentMeeting", label: "Parent meeting", type: "number" as const },
+  { key: "pickUpDropOff", label: "Pick up/ Drop off", type: "number" as const },
+  {
+    key: "pickUpDropOffAtls",
+    label: "Pick up/ Drop off ATLS",
+    type: "number" as const,
+  },
+  { key: "sms", label: "SMS", type: "number" as const },
+  { key: "smsAtls", label: "SMS ATLS", type: "number" as const },
+  {
+    key: "progressReport",
+    label: "Progress/Gradebook Report",
+    type: "number" as const,
+  },
+  {
+    key: "progressReportAtls",
+    label: "Gradebook Report ATLS",
+    type: "number" as const,
+    headerSpanClassName: "leading-[19px] text-[14px] font-bold",
+  },
+  {
+    key: "prepareLessonTutoring",
+    label: "Prepare lesson - Tutoring",
+    type: "number" as const,
+  },
+  {
+    key: "meetingTraining",
+    label: "Meeting/ Training",
+    type: "number" as const,
+  },
+  { key: "pt", label: "PT", type: "number" as const },
+  { key: "discoveryCamp", label: "Discovery Camp", type: "number" as const },
+  { key: "outing", label: "Outing", type: "number" as const },
+  { key: "summer", label: "Summer", type: "number" as const },
+  {
+    key: "prepareLessonClubs",
+    label: "Prepare lesson - Clubs",
+    type: "number" as const,
+  },
+  { key: "conductTest", label: "Conduct test", type: "number" as const },
+  {
+    key: "renewalProjects",
+    label: "Renewal Projects",
+    type: "number" as const,
+  },
+  { key: "supportLxo", label: "Support LXO", type: "number" as const },
+  { key: "supportEc", label: "Support EC", type: "number" as const },
+  { key: "supportMkt", label: "Support MKT", type: "number" as const },
+  { key: "totalHours", label: "Total Hours", type: "number" as const },
+  { key: "academicHours", label: "Academic Hours", type: "number" as const },
+  {
+    key: "adminHours",
+    label: "Admin Hours",
+    type: "number" as const,
+    cellClassName: "text-xs",
+    headerSpanClassName: "text-xs no-underline leading-[11px] text-[#49780f]",
+  },
+];
+
+export const SALARY_COLUMNS = [
+  { key: "deductionHours", label: "Deduction Hours", type: "number" as const },
+  { key: "baseSalary", label: "Base Salary", type: "currency" as const },
+  { key: "totalSalary", label: "Total Salary", type: "currency" as const },
+];
+
+export const EMPLOYEE_COLUMNS = [
+  { key: "center", label: "L07", type: "text" as const, width: 100 },
+  {
+    key: "employeeId",
+    label: "ID Number",
+    type: "text" as const,
+    width: 120,
+    headerClassName: "leading-[16.4px]",
+  },
+  { key: "fullName", label: "Name", type: "text" as const, width: 220 },
+  {
+    key: "salaryScale",
+    label: "Salary Scale",
+    type: "text" as const,
+    width: 120,
+  },
+  { key: "from", label: "From", type: "text" as const, width: 100 },
+  { key: "to", label: "To", type: "text" as const, width: 100 },
+  ...BASE_TASK_COLUMNS,
+  { key: "className", label: "Class Name", type: "text" as const, width: 150 },
+  { key: "noteDays", label: "Note", type: "text" as const, width: 220 },
+];
+
+export const CENTER_COLUMNS = [
+  { key: "l07", label: "L07", type: "text" as const, width: 150 },
+  {
+    key: "business",
+    label: "Business",
+    type: "text" as const,
+    width: 120,
+    headerClassName: "leading-[16.4px]",
+  },
+  {
+    key: "salaryScale",
+    label: "Salary Scale",
+    type: "text" as const,
+    width: 120,
+  },
+  { key: "from", label: "From", type: "text" as const, width: 100 },
+  { key: "to", label: "To", type: "text" as const, width: 100 },
+  {
+    key: "chargeLxo",
+    label: "Charge LXO",
+    type: "currency" as const,
+    width: 140,
+  },
+  {
+    key: "chargeEc",
+    label: "Charge EC",
+    type: "currency" as const,
+    width: 140,
+  },
+  {
+    key: "chargePtDemo",
+    label: "Charge PT-DEMO",
+    type: "currency" as const,
+    width: 140,
+  },
+  {
+    key: "chargeMktLocal",
+    label: "Charge MKT Local",
+    type: "currency" as const,
+    width: 140,
+  },
+  {
+    key: "chargeRenewal",
+    label: "Charge Renewal",
+    type: "currency" as const,
+    width: 140,
+  },
+  {
+    key: "chargeDiscovery",
+    label: "Charge Discovery",
+    type: "currency" as const,
+    width: 140,
+  },
+  {
+    key: "chargeSummerOuting",
+    label: "Charge Summer Outing",
+    type: "currency" as const,
+    width: 140,
+  },
+  {
+    key: "totalSalary",
+    label: "Total Salary",
+    type: "currency" as const,
+    width: 160,
+  },
+];
