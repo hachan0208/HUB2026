@@ -304,23 +304,21 @@ export function PivotSheet() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="flex-1 flex flex-col h-full bg-transparent p-4 md:p-8 gap-6 overflow-hidden"
+      className="flex-1 flex flex-col h-full bg-transparent p-4 md:p-8 gap-4 overflow-hidden"
     >
-      {/* Header Card */}
+      {/* Header Container - No Card Background, Not Rounded, Moved Up */}
       <motion.div
         variants={itemVariants}
-        className="soft-card force-light w-full max-w-[1600px] p-4 flex flex-col md:flex-row items-center justify-between gap-4 shrink-0 relative z-50"
+        className="w-full flex flex-col md:flex-row items-center justify-between gap-4 shrink-0 relative z-50 font-[family-name:var(--font-table,var(--font-main))]"
       >
-        <div className="absolute inset-0 striped-pattern opacity-[0.08] pointer-events-none" />
-
         <div className="flex items-center gap-4 relative z-10">
           <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary shrink-0 border border-primary/30 shadow-inner">
             <Table2 className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl font-normal font-serif text-foreground tracking-tight leading-tight">
+            <h2 className="text-2xl font-normal text-foreground tracking-tight leading-tight">
               Dữ liệu{" "}
-              <span className="not-italic font-script text-primary text-3xl lowercase">
+              <span className="text-primary text-3xl font-bold">
                 Pivot Sheet
               </span>
             </h2>
@@ -366,7 +364,7 @@ export function PivotSheet() {
               </Tooltip>
               <DropdownMenuContent
                 align="end"
-                className="w-64 border border-primary/10 shadow-xl p-2 bg-white rounded-2xl"
+                className="w-64 border border-primary/10 shadow-xl p-2 bg-white rounded-2xl font-[family-name:var(--font-table,var(--font-main))]"
               >
                 <DropdownMenuLabel className="font-bold uppercase text-[0.625rem] tracking-widest text-primary/60 px-3 py-2">
                   Thao tác báo cáo
@@ -401,7 +399,7 @@ export function PivotSheet() {
 
             <button
               onClick={handleExportExcel}
-              className="h-10 px-6 rounded-xl bg-primary text-white shadow-md flex items-center gap-2 active:scale-95 transition-all"
+              className="h-10 px-6 rounded-xl bg-primary text-white shadow-md flex items-center gap-2 active:scale-95 transition-all font-[family-name:var(--font-table,var(--font-main))]"
             >
               <Download className="w-3.5 h-3.5" />
               <span className="text-[0.65rem] font-bold tracking-widest uppercase">
@@ -412,19 +410,19 @@ export function PivotSheet() {
         </div>
       </motion.div>
 
-      {/* Content Card */}
+      {/* Content Container - Make the table round, no border, bigger via w-full */}
       <motion.div
         variants={itemVariants}
-        className="bg-white soft-card force-light w-full max-w-[1600px] flex-1 flex flex-col min-h-0 border-none shadow-2xl shadow-rose-100/20 z-10 relative"
+        className="bg-white w-full flex-1 flex flex-col min-h-0 border border-slate-200 rounded-xl overflow-hidden shadow-sm z-10 relative font-[family-name:var(--font-table,var(--font-main))]"
       >
-        <div className="absolute inset-0 striped-pattern opacity-[0.05] pointer-events-none rounded-[2.5rem] overflow-hidden" />
+        <div className="absolute inset-0 striped-pattern opacity-[0.05] pointer-events-none" />
         {/* Main Scroll Container */}
         <div
           className="flex-1 overflow-auto custom-scrollbar relative bg-white"
           style={{ overscrollBehavior: "contain" }}
         >
           <table
-            className="w-full text-left border-separate border-spacing-0 min-w-max relative bg-white"
+            className="w-full text-left border-separate border-spacing-0 min-w-max relative bg-white border-l border-t border-[#E2E8F0]"
             style={{ tableLayout: "fixed" }}
           >
             <thead className="sticky top-0 z-[40] shadow-[0_4px_10px_-2px_rgba(0,0,0,0.05)]">
@@ -742,7 +740,7 @@ export function PivotSheet() {
         )}
       </motion.div>
 
-      <div className="flex justify-between w-full max-w-[1560px] text-[0.6rem] font-black uppercase tracking-[0.3em] text-muted-foreground/40 px-4 mt-2">
+      <div className="flex justify-between w-full text-[0.6rem] font-black uppercase tracking-[0.3em] text-muted-foreground/40 px-4 mt-2 font-[family-name:var(--font-table,var(--font-main))]">
         <span>KẾT QUẢ ĐỐI SOÁT PIVOT • {pivotData.sortedRows.length} DÒNG</span>
         <span>NGUỒN DỮ LIỆU: SHEET 1 AE</span>
       </div>

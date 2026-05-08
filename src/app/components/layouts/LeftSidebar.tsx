@@ -4,7 +4,7 @@ import {
   ListChecks,
   Users,
   ChevronRight,
-  Calculator,
+  Coins,
   RefreshCw,
   Flower2,
   LayoutDashboard,
@@ -54,7 +54,7 @@ export function LeftSidebar({
           to="/"
           className="flex items-center shrink-0 relative transition-transform hover:scale-110 gap-2"
         >
-          <Calculator className="w-6 h-6 text-primary" />
+          <Coins className="w-6 h-6 text-primary" />
           <span className="flex items-end gap-0.5">
             <span className="font-serif text-lg font-bold tracking-tight text-foreground leading-none">Pay</span>
             <span className="font-script text-xl text-primary lowercase leading-none transform translate-y-0.5">roll</span>

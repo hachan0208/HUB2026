@@ -353,7 +353,7 @@ export function MasterAE() {
                       onCellChange={(row, col, val) =>
                         handleCellChange(activeTab, row, col, val)
                       }
-                      onDeleteRow={(idx) => handleDeleteRow(activeTab, idx)}
+                      onDeleteRow={(row, idx) => handleDeleteRow(activeTab, row)}
                       isEditable={true}
                       externalSearchTerm={searchTerm}
                       onExternalSearchChange={setSearchTerm}

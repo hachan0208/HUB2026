@@ -14,6 +14,8 @@ import {
   RefreshCw,
   FileSpreadsheet,
   AlertTriangle,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import {
   parseMoneyToNumber,
@@ -79,6 +81,7 @@ export function BulkPayment() {
   const [progress, setProgress] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [showLeftCard, setShowLeftCard] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -371,9 +374,13 @@ export function BulkPayment() {
     });
   };
 
-  const handleDeleteRow = (rowIndex: number) => {
+  const handleDeleteRow = (rowToDelete: any) => {
     updateAppData((prev) => {
-      const newData = [...prev.BankExport.data];
+      const data = prev.BankExport.data;
+      const rowIndex = data.findIndex(r => r === rowToDelete);
+      if (rowIndex === -1) return prev;
+      
+      const newData = [...data];
       newData.splice(rowIndex, 1);
       // Re-index Payment Serial Number if it exists
       const updatedData = newData.map((row, idx) => ({
@@ -393,8 +400,9 @@ export function BulkPayment() {
       className="flex-1 w-full max-w-[1360px] mx-auto min-h-0 flex flex-col xl:flex-row gap-6 md:gap-8 bg-transparent p-4 md:p-6 overflow-hidden"
     >
       {/* Left Panel - Actions & Info */}
-      <div className="w-full xl:w-80 flex flex-col gap-6 md:gap-8 shrink-0 overflow-y-auto overflow-x-hidden custom-scrollbar pr-2 pb-10">
-        {/* Main Controls Card */}
+      {showLeftCard && (
+        <div className="w-full xl:w-80 flex flex-col gap-6 md:gap-8 shrink-0 overflow-y-auto overflow-x-hidden custom-scrollbar pr-2 pb-10">
+          {/* Main Controls Card */}
         <div className="bg-white soft-card p-6 flex flex-col gap-8 shrink-0 relative">
           <div className="absolute inset-0 pattern-dots opacity-[0.05] border-transparent pointer-events-none rounded-[40px] overflow-hidden" />
 
@@ -512,6 +520,7 @@ export function BulkPayment() {
           )}
         </AnimatePresence>
       </div>
+      )}
 
       {/* Right Panel - Data View */}
       <div className="flex-1 bg-white soft-card force-light flex flex-col overflow-hidden">
@@ -532,6 +541,18 @@ export function BulkPayment() {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setShowLeftCard(!showLeftCard)}
+              className="p-3 rounded-full border border-border bg-white text-muted-foreground hover:text-primary transition-all group shadow-sm"
+              title={showLeftCard ? "Ẩn bảng thông tin" : "Hiện bảng thông tin"}
+            >
+              {showLeftCard ? (
+                <PanelLeftClose className="w-5 h-5 group-hover:scale-110 transition-transform duration-500" />
+              ) : (
+                <PanelLeftOpen className="w-5 h-5 group-hover:scale-110 transition-transform duration-500" />
+              )}
+            </button>
+
             <AnimatePresence>
               {showSearch && (
                 <motion.div

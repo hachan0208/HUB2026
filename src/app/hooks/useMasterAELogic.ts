@@ -48,13 +48,16 @@ export function useMasterAELogic() {
   const handleCellChange = useCallback(
     (
       tab: MasterAETab,
-      rowIndex: number,
+      row: any,
       columnKey: string,
       value: string | number | null,
     ) => {
       if (tab === "BulkPayment") return;
       updateAppData((prev) => {
         const data = [...prev[tab].data];
+        const rowIndex = data.findIndex((r) => r === row || (r["ID Number"] === row["ID Number"] && r["TOTAL PAYMENT"] === row["TOTAL PAYMENT"] && r["No"] === row["No"]));
+        if (rowIndex === -1) return prev;
+        
         data[rowIndex] = { ...data[rowIndex], [columnKey]: value };
         return {
           ...prev,
@@ -66,10 +69,13 @@ export function useMasterAELogic() {
   );
 
   const handleDeleteRow = useCallback(
-    (tab: MasterAETab, rowIndex: number) => {
+    (tab: MasterAETab, rowToDelete: any) => {
       if (tab === "BulkPayment") return;
       updateAppData((prev) => {
         const data = [...prev[tab].data];
+        const rowIndex = data.findIndex((r) => r === rowToDelete || (r["ID Number"] === rowToDelete["ID Number"] && r["TOTAL PAYMENT"] === rowToDelete["TOTAL PAYMENT"]));
+        if (rowIndex === -1) return prev;
+        
         data.splice(rowIndex, 1);
         return {
           ...prev,

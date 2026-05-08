@@ -994,8 +994,9 @@ export function AEDataConfig({
                         ? String(row[idxName]).trim()
                         : "";
 
+                    if (!accVal) continue;
+
                     if (
-                      (accVal !== "" || numTP !== 0) &&
                       (nameVal !== "" || idxName === -1)
                     ) {
                       const obj: any = {};
@@ -1268,20 +1269,7 @@ export function AEDataConfig({
           });
           processedSheet1Ids.add(id);
 
-          // Nếu lệch tiền, đưa vào danh sách Hold để kiểm tra
-          if (Math.abs(diff) > 1) {
-            const existsInHold = finalHoldData.some(
-              (h) => String(h["ID Number"]).trim() === id,
-            );
-            if (!existsInHold) {
-              finalHoldData.push({
-                ...bankRow,
-                No: finalHoldData.length + 1,
-                Note: `Lệch tiền: Sheet1(${sheet1Total}) vs Bank(${bankAmount})`,
-                "Sheet Source": "Auto-Audit",
-              });
-            }
-          }
+          // (Removed auto-pushing to Hold based on user requirement: 'chỉ lấy các sheet chứa từ Hold')
         } else {
           const diff = -bankAmount;
           finalSoSanhAeData.push({
@@ -1293,18 +1281,7 @@ export function AEDataConfig({
             "Ghi chú": "Thiếu Sheet 1 (Chưa duyệt)",
           });
 
-          // Có trong Bank nhưng không có trong Sheet 1 -> Chuyển vào Hold
-          const existsInHold = finalHoldData.some(
-            (h) => String(h["ID Number"]).trim() === id,
-          );
-          if (!existsInHold) {
-            finalHoldData.push({
-              ...bankRow,
-              No: finalHoldData.length + 1,
-              Note: "Tự động: Thiếu Sheet 1 (Chưa duyệt)",
-              "Sheet Source": "Auto-Audit",
-            });
-          }
+          // (Removed auto-pushing to Hold based on user requirement)
         }
       });
 
@@ -1329,8 +1306,12 @@ export function AEDataConfig({
         }
       });
 
+      // Lọc các bản ghi có 'Bank Account Number' không trống cho cả Sheet 1 và Hold
+      const verifiedSheet1Data = finalSheet1Data.filter(r => r["Bank Account Number"] && String(r["Bank Account Number"]).trim() !== "");
+      const verifiedHoldData = finalHoldData.filter(r => r["Bank Account Number"] && String(r["Bank Account Number"]).trim() !== "");
+
       // Cập nhật lại số thứ tự cho Hold Data
-      finalHoldData.forEach((row, idx) => (row["No"] = idx + 1));
+      verifiedHoldData.forEach((row, idx) => (row["No"] = idx + 1));
 
       updateAppData((prev) => ({
         ...prev,
@@ -1348,7 +1329,7 @@ export function AEDataConfig({
           ],
           data: finalBankData,
         },
-        Sheet1_AE: { headers: sheet1Headers, data: finalSheet1Data },
+        Sheet1_AE: { headers: sheet1Headers, data: verifiedSheet1Data },
         SoSanh_AE: {
           headers: [
             "ID Number",
@@ -1376,12 +1357,12 @@ export function AEDataConfig({
             "Sheet Source",
             "Note",
           ],
-          data: finalHoldData,
+          data: verifiedHoldData,
         },
       }));
 
       toast.success(
-        `Xử lý xong: ${finalSheet1Data.length} Sheet1, ${finalBankData.length} Bank, ${finalHoldData.length} Hold.`,
+        `Xử lý xong: ${verifiedSheet1Data.length} Sheet1, ${finalBankData.length} Bank, ${verifiedHoldData.length} Hold.`,
       );
     } catch (error: any) {
       console.error("Error processing AE data:", error);
@@ -1551,8 +1532,8 @@ export function AEDataConfig({
           </div>
         )}
 
-        <div className="flex-1 min-h-0 overflow-auto custom-scrollbar flex flex-col p-2 md:p-4 w-full font-[family-name:var(--font-table,var(--font-main))]">
-          <div className="bg-white flex-1 min-h-0 w-full rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+        <div className="flex-1 min-h-0 p-2 md:p-4 flex flex-col w-full font-[family-name:var(--font-table,var(--font-main))]">
+          <div className="bg-white flex-1 min-h-0 w-full rounded-xl overflow-auto custom-scrollbar border border-slate-200 shadow-sm">
             <table className="w-full border-separate border-spacing-0 table-auto text-left border-l border-t border-[#E2E8F0]">
               <thead>
                 <tr className="bg-[#F3EFE0]">

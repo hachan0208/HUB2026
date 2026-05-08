@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Link, useLocation } from "react-router";
 import {
-  LayoutGrid,
+  Coins,
   Building2,
   Database,
   ShieldCheck,
@@ -12,7 +12,6 @@ import {
   Settings,
   Trash2,
   Menu,
-  Calculator,
   ListChecks,
   Users,
   BarChart3,
@@ -72,7 +71,7 @@ export function Navbar({ onToggleMobileMenu, onOpenSettings }: NavbarProps) {
             }`}
             title="Overview"
           >
-            <LayoutGrid className="w-5 h-5" />
+            <Coins className="w-5 h-5" />
             <span className="flex items-end gap-0.5">
               <span className="font-serif text-lg font-bold tracking-tight text-foreground leading-none">Pay</span>
               <span className="font-script text-xl text-primary lowercase leading-none transform translate-y-0.5">roll</span>

@@ -94,7 +94,7 @@ interface DataTableProps {
   showRowNumber?: boolean;
   onSelectionChange?: (selectedRows: any[]) => void;
   onCellChange?: (row: any, colKey: string, value: any) => void;
-  onDeleteRow?: (rowIndex: number) => void;
+  onDeleteRow?: (row: any, rowIndex: number) => void;
   onDeleteSelection?: (range: {
     startR: number;
     endR: number;
@@ -1313,7 +1313,29 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
       if (editingCell && onCellChange) {
         const col = visibleColumns[editingCell.c];
         const row = filteredAndSortedData[editingCell.r];
-        onCellChange(row, col.key, editValue);
+        let finalValue = editValue;
+        
+        // Handle Excel-like formula / math calculation
+        if (typeof finalValue === "string" && finalValue.trim().startsWith("=")) {
+          try {
+            // Remove "=" and all spaces, then safely evaluate basic math
+            let expression = finalValue.substring(1).replace(/,/g, "");
+            
+            // Very simple math parser for +, -, *, /
+            // Using Function as a safe-ish way compared to eval, but restricted to math characters
+            if (/^[0-9+\-*/().\s]+$/.test(expression)) {
+              // eslint-disable-next-line no-new-func
+              const result = new Function(`return (${expression})`)();
+              if (!isNaN(result) && result !== null) {
+                finalValue = result;
+              }
+            }
+          } catch (e) {
+            console.warn("Formula evaluation failed", e);
+          }
+        }
+        
+        onCellChange(row, col.key, finalValue);
       }
       setEditingCell(null);
     }, [
@@ -2251,7 +2273,8 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
                 <button
                   onClick={() => {
                     if (onDeleteRow) {
-                      onDeleteRow(contextMenu.r);
+                      const row = filteredAndSortedData[contextMenu.r];
+                      onDeleteRow(row, contextMenu.r);
                     } else {
                       toast.error(
                         "Tính năng xóa dòng không khả dụng cho bảng này",
