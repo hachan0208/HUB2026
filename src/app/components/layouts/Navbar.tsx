@@ -50,7 +50,7 @@ export function Navbar({ onToggleMobileMenu, onOpenSettings }: NavbarProps) {
   const location = useLocation();
 
   return (
-    <div className="h-16 flex items-center px-0 gap-6 bg-transparent shrink-0">
+    <div className="h-[30px] flex items-center px-0 gap-6 bg-transparent shrink-0">
       {/* Mobile Menu Button */}
       <button
         onClick={onToggleMobileMenu}
@@ -60,11 +60,11 @@ export function Navbar({ onToggleMobileMenu, onOpenSettings }: NavbarProps) {
       </button>
 
       {/* Nav items - Hidden on mobile */}
-      <nav className="hidden lg:flex items-center justify-center gap-3 flex-1 pl-0 pt-0 pb-0 -mt-8 relative">
+      <nav className="hidden lg:flex items-center justify-center gap-3 flex-1 pl-0 pt-0 pb-0 -mt-[12px] relative">
         <div className="absolute left-0">
           <Link
             to="/"
-            className={`relative flex items-center gap-2 py-2 px-3 mx-1 transition-all duration-300 whitespace-nowrap rounded-lg ${
+            className={`relative flex items-center gap-2 pr-[8px] pl-[7px] pt-[4px] pb-[5px] mx-1 transition-all duration-300 whitespace-nowrap rounded-lg ${
               location.pathname === "/"
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-slate-100 hover:text-foreground"

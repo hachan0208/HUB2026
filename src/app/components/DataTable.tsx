@@ -1319,12 +1319,12 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
         if (typeof finalValue === "string" && finalValue.trim().startsWith("=")) {
           try {
             // Remove "=" and all spaces, then safely evaluate basic math
-            let expression = finalValue.substring(1).replace(/,/g, "");
+            const expression = finalValue.substring(1).replace(/,/g, "");
             
             // Very simple math parser for +, -, *, /
             // Using Function as a safe-ish way compared to eval, but restricted to math characters
             if (/^[0-9+\-*/().\s]+$/.test(expression)) {
-              // eslint-disable-next-line no-new-func
+               
               const result = new Function(`return (${expression})`)();
               if (!isNaN(result) && result !== null) {
                 finalValue = result;

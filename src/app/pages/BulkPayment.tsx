@@ -401,12 +401,12 @@ export function BulkPayment() {
     >
       {/* Left Panel - Actions & Info */}
       {showLeftCard && (
-        <div className="w-full xl:w-80 flex flex-col gap-6 md:gap-8 shrink-0 overflow-y-auto overflow-x-hidden custom-scrollbar pr-2 pb-10">
+        <div className="w-full xl:w-80 flex flex-col gap-6 md:gap-8 shrink-0 overflow-y-auto overflow-x-hidden custom-scrollbar pr-0 pb-0">
           {/* Main Controls Card */}
-        <div className="bg-white soft-card p-6 flex flex-col gap-8 shrink-0 relative">
+        <div className="bg-white soft-card p-6 flex flex-col gap-8 shrink-0 relative h-[282.656px]">
           <div className="absolute inset-0 pattern-dots opacity-[0.05] border-transparent pointer-events-none rounded-[40px] overflow-hidden" />
 
-          <div className="flex items-center gap-5 relative z-10">
+          <div className="flex items-center gap-5 relative z-10 h-[51px] -mb-[15px]">
             <div className="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center text-primary border border-primary/30 shadow-inner">
               <CreditCard className="w-7 h-7" />
             </div>
@@ -424,11 +424,11 @@ export function BulkPayment() {
           </div>
 
           <div className="space-y-6 relative z-10">
-            <div className="p-6 bg-muted/20 rounded-[2rem] border border-border">
-              <h4 className="text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary/60 mb-4 flex items-center gap-2">
+            <div className="p-3 mb-3 w-[266.667px] h-[102.323px] bg-muted/20 rounded-[2rem] border border-border">
+              <h4 className="text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary/60 mb-2 flex items-center gap-2">
                 <FileText className="w-4 h-4" /> THÔNG TIN
               </h4>
-              <div className="space-y-4">
+              <div className="space-y-2 h-[38px] pb-2">
                 <div className="flex justify-between items-center">
                   <span className="text-[0.625rem] font-bold uppercase tracking-widest text-muted-foreground">
                     Số dòng
@@ -476,7 +476,7 @@ export function BulkPayment() {
             <button
               onClick={handleGenerateReport}
               disabled={isGenerating}
-              className="soft-button bg-primary text-white shadow-md flex items-center justify-center gap-4 px-8 py-5 w-full transition-all group"
+              className="soft-button bg-primary text-white shadow-md flex items-center justify-center gap-4 px-8 h-[20px] py-0 w-full transition-all group"
             >
               {isGenerating ? (
                 <RefreshCw className="w-5 h-5 animate-spin" />
@@ -524,98 +524,6 @@ export function BulkPayment() {
 
       {/* Right Panel - Data View */}
       <div className="flex-1 bg-white soft-card force-light flex flex-col overflow-hidden">
-        {/* Internal Header */}
-        <div className="px-8 py-6 flex flex-col md:flex-row items-start md:items-center justify-between border-b border-border bg-muted/10 shrink-0 gap-4">
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(165,179,150,0.5)]" />
-              <span className="text-[0.8rem] font-bold uppercase tracking-[0.3em] text-muted-foreground">
-                PREVIEW & FINALIZE
-              </span>
-            </div>
-            {appData.BankExport.data.length > 0 && (
-              <p className="text-[0.625rem] font-semibold uppercase tracking-widest text-primary/60 ml-5 opacity-80">
-                Nhấn đúp (Double-click) hoặc F2 vào ô để chỉnh sửa
-              </p>
-            )}
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setShowLeftCard(!showLeftCard)}
-              className="p-3 rounded-full border border-border bg-white text-muted-foreground hover:text-primary transition-all group shadow-sm"
-              title={showLeftCard ? "Ẩn bảng thông tin" : "Hiện bảng thông tin"}
-            >
-              {showLeftCard ? (
-                <PanelLeftClose className="w-5 h-5 group-hover:scale-110 transition-transform duration-500" />
-              ) : (
-                <PanelLeftOpen className="w-5 h-5 group-hover:scale-110 transition-transform duration-500" />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {showSearch && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="relative"
-                >
-                  <input
-                    type="text"
-                    placeholder="TÌM KIẾM..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="bg-primary/5 border border-primary/10 rounded-full pl-10 pr-4 py-2.5 text-[0.65rem] w-64 uppercase font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-sans"
-                  />
-                  <Search className="w-4 h-4 text-primary/30 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <DropdownMenu>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DropdownMenuTrigger asChild>
-                    <button className="p-3 rounded-full border border-border bg-white text-muted-foreground hover:text-primary transition-all group shadow-sm">
-                      <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" />
-                    </button>
-                  </DropdownMenuTrigger>
-                </TooltipTrigger>
-                <TooltipContent>Cài đặt</TooltipContent>
-              </Tooltip>
-              <DropdownMenuContent
-                align="end"
-                className="w-64 border border-primary/10 shadow-2xl p-2 bg-white rounded-2xl"
-              >
-                <DropdownMenuLabel className="font-bold uppercase text-[0.625rem] tracking-widest text-primary/60 px-3 py-2">
-                  Thao tác
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-primary/10 mx-1" />
-                <div className="p-1">
-                  <DropdownMenuItem
-                    onClick={() => setShowSearch(!showSearch)}
-                    className="cursor-pointer font-bold uppercase text-[0.6875rem] gap-3 hover:bg-primary/5 p-3 rounded-xl transition-all"
-                  >
-                    <Search className="w-4 h-4" />
-                    <span>{showSearch ? "Ẩn tìm kiếm" : "Hiện tìm kiếm"}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-primary/5 mx-1" />
-                  <DropdownMenuItem
-                    onClick={() => setShowClearDialog(true)}
-                    className="cursor-pointer font-bold uppercase text-[0.6875rem] gap-3 hover:bg-rose-50 text-rose-500 p-3 rounded-xl transition-all"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    <span>Xoá bảng kê</span>
-                  </DropdownMenuItem>
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Removed Export Button */}
-          </div>
-        </div>
-
         {appData.BankExport.data.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center text-primary/10 bg-white">
             <div className="w-32 h-32 bg-primary/5 rounded-full flex items-center justify-center mb-8 border border-primary/10 shadow-inner">
@@ -636,6 +544,11 @@ export function BulkPayment() {
               onCellChange={handleCellChange}
               onDeleteRow={handleDeleteRow}
               isEditable={true}
+              style={{
+                "--table-padding": "6px",
+                "--header-font-size": "11px",
+                "--font-size": "13px",
+              } as any}
               externalSearchTerm={debouncedSearch}
               onExternalSearchChange={setSearchTerm}
               storageKey="bulk_payment"

@@ -304,7 +304,7 @@ export function PivotSheet() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="flex-1 flex flex-col h-full bg-transparent p-4 md:p-8 gap-4 overflow-hidden"
+      className="flex-1 flex flex-col h-full bg-transparent px-4 md:px-8 pt-0 pb-0 gap-4 overflow-hidden max-w-7xl mx-auto w-full"
     >
       {/* Header Container - No Card Background, Not Rounded, Moved Up */}
       <motion.div

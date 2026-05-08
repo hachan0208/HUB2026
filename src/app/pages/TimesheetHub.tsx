@@ -392,7 +392,7 @@ export function TimesheetHub() {
                   <button
                     id="fromDate"
                     name="fromDate"
-                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md bg-transparent text-[10px] font-bold outline-none uppercase tracking-wider transition-colors h-full ${fromDate ? "text-primary" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"}`}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md bg-transparent text-[11px] font-bold outline-none uppercase tracking-wider transition-colors h-full leading-[13px] ${fromDate ? "text-primary" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"}`}
                   >
                     <CalendarIcon className="w-3 h-3 opacity-70" />
                     {fromDate
@@ -425,7 +425,7 @@ export function TimesheetHub() {
                   <button
                     id="toDate"
                     name="toDate"
-                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md bg-transparent text-[10px] font-bold outline-none uppercase tracking-wider transition-colors h-full ${toDate ? "text-primary" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"}`}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md bg-transparent text-[11px] font-bold outline-none uppercase tracking-wider transition-colors h-full leading-[13px] ${toDate ? "text-primary" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"}`}
                   >
                     <CalendarIcon className="w-3 h-3 opacity-70" />
                     {toDate

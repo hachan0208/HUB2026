@@ -149,20 +149,20 @@ export function MasterAE() {
             <div className="absolute bottom-[-10%] left-[-5%] w-[30%] h-[30%] bg-primary/5 rounded-full blur-[100px] -z-10" />
 
             {/* Main Content Card */}
-            <div className="bg-white soft-card force-light flex-1 flex flex-col min-h-0 relative z-10 w-full max-w-[1240px]">
+            <div className="bg-white soft-card force-light flex-1 flex flex-col min-h-0 relative z-10 w-full max-w-[1240px]" style={{ height: '459px' }}>
               <div className="absolute inset-0 striped-pattern opacity-[0.05] pointer-events-none rounded-[2.5rem] overflow-hidden" />
 
               {/* Integrated Header & Controls */}
-              <div className="px-[32px] py-[12px] flex flex-row items-center justify-between gap-6 border-b border-border bg-muted/10 shrink-0 relative">
+              <div className="px-[32px] py-[32px] h-[92.67px] my-0 flex flex-row items-center justify-between gap-6 border-b border-border bg-muted/10 shrink-0 relative">
                 <div className="absolute inset-0 pattern-dots opacity-[0.05] pointer-events-none" />
                 <div className="flex items-center gap-5 relative z-10 shrink-0">
-                  <div className="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center text-primary shrink-0 border border-primary/30 shadow-inner hidden md:flex">
+                  <div className="w-[40px] h-[40px] text-[10px] leading-[15px] bg-primary/20 rounded-full flex items-center justify-center text-primary shrink-0 border border-primary/30 shadow-inner hidden md:flex">
                     <Users className="w-7 h-7" />
                   </div>
-                  <div className="min-w-0">
-                    <h2 className="text-xl md:text-3xl font-normal font-serif text-foreground tracking-tight flex items-end gap-1 mb-2">
+                  <div className="min-w-0 text-[11px] leading-[15px]">
+                    <h2 className="text-[19px] leading-[17px] font-normal font-serif text-foreground tracking-tight flex items-end gap-1 mb-2">
                       Final from{" "}
-                      <span className="not-italic font-bold font-script text-primary text-3xl md:text-5xl lowercase inline-block transform -translate-y-0.5">
+                      <span className="not-italic font-bold font-script text-primary text-3xl md:text-5xl lowercase inline-block transform -translate-y-0.5 h-[40px]">
                         ae
                       </span>
                     </h2>
