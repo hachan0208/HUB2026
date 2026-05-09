@@ -30,8 +30,8 @@ const RAW_MAPPINGS = [
   { l07: "HN0023.LDM", keys: ["LD", "LDM", "HN23"] },
   { l07: "HN0024.TCY", keys: ["TC", "TCY", "HN24"] },
   { l07: "HN0025.LTT", keys: ["LTT", "HN25"] },
-  { l07: "HN0026.VHG", keys: ["VH", "VHG", "HN26"] },
-  { l07: "HN0027.OPK", keys: ["OP", "OPK", "HN27", "OCEAN PARK"] },
+  { l07: "HN0026.VHG", keys: ["VH", "VHG", "Viet Hung", "HN26", "HN0026"] },
+  { l07: "HN0027.OPK", keys: ["OP", "OPK", "OCEAN PARK", "HN27"] },
   { l07: "HN0028.PVD", keys: ["PVD", "HN28"] },
   { l07: "HN0029.VPH", keys: ["VPH", "HN29"] },
   { l07: "HN0030.AKH", keys: ["AKH", "HN30"] },
@@ -42,10 +42,10 @@ const RAW_MAPPINGS = [
   { l07: "HY0001.ECP", keys: ["ECP", "HY01"] },
   { l07: "HP0001.LHP", keys: ["LHP", "HP1", "HP01"] },
   { l07: "HP0002.HBT", keys: ["HBT", "HP2", "HP02"] },
-  { l07: "HP0003.VIN", keys: ["VIN", "HP3", "HP03"] },
+  { l07: "HP0003.VIN", keys: ["HP", "HP3", "HP03"] },
   { l07: "QN0001.HLG", keys: ["HLG", "QN", "HL", "QN01"] },
   { l07: "VIN001.CTG", keys: ["CTG", "CT", "VIN01", "VIN1"] },
-  { l07: "VP0001.PCT", keys: ["PCT", "VP", "VP01", "VP1"] },
+  { l07: "VP0001.PCT", keys: ["PCT", "VP01", "VP1", "Vinh Phuc", "VP0001"] },
   { l07: "TH0001.TPU", keys: ["TPU", "TH01.TPU", "TH1"] },
   { l07: "TN0001.LNQ", keys: ["LNQ", "TN01.LNQ", "TN01", "TN1"] },
   { l07: "HN0200.ASP", keys: ["HN0.ASP", "ASP", "HN0200"] },
@@ -56,7 +56,7 @@ const PRE_CALCULATED_MAPPINGS = RAW_MAPPINGS.flatMap((m) =>
   m.keys.map((k) => ({
     l07: m.l07,
     key: k.toUpperCase(),
-    regex: new RegExp(`(^|[^A-Z0-9])${k.toUpperCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}([^A-Z0-9]|$)`),
+    regex: new RegExp(`(?:^|[^A-Z0-9À-ỹa-z])${k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:[^A-Z0-9À-ỹa-z]|$)`, "i"),
   }))
 ).sort((a, b) => b.key.length - a.key.length);
 
@@ -186,16 +186,25 @@ const resolveCenterCode = (input: string): string => {
   if (VALID_MAPPED_CENTERS.has(normalized)) return normalized;
   if (CENTER_MAPPING[normalized]) return CENTER_MAPPING[normalized];
   
+  // Exact match first
   for (const mapping of PRE_CALCULATED_MAPPINGS) {
-    if (mapping.key === normalized || mapping.regex.test(normalized)) {
+    if (mapping.key === normalized) {
       return mapping.l07;
     }
   }
-  return normalized;
+
+  // Regex word boundary match
+  for (const mapping of PRE_CALCULATED_MAPPINGS) {
+    if (mapping.regex.test(input)) {
+      return mapping.l07;
+    }
+  }
+
+  return input; // Fallback to raw if unmatched
 };
 
 const getL07FromFileName = (fileName: string): string => {
-  const name = String(fileName).toUpperCase();
+  const name = String(fileName);
   for (const mapping of PRE_CALCULATED_MAPPINGS) {
     if (mapping.regex.test(name)) return mapping.l07;
   }

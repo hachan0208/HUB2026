@@ -217,7 +217,8 @@ export function Audit() {
       sortable: true,
       type: "number",
       width: 150,
-      render: (val: number) => val?.toFixed(2),
+      headerStyle: { backgroundColor: "#f8f8f8" },
+      render: (val: any) => typeof val === "number" ? val.toFixed(2) : Number(val || 0).toFixed(2),
     },
     {
       key: "expected",
@@ -226,14 +227,14 @@ export function Audit() {
       sortable: true,
       type: "number",
       width: 140,
-      render: (val: number, row: any) => (
+      render: (val: any, row: any) => (
         <div className="flex flex-col">
           <span className="text-slate-700 font-bold text-xs">
-            {val?.toFixed(2)}
+            {typeof val === "number" ? val.toFixed(2) : Number(val || 0).toFixed(2)}
           </span>
           <span className="text-[10px] text-muted-foreground font-medium">
             {row.teacherHours > 0
-              ? (row.expected / row.teacherHours).toFixed(1)
+              ? Number(row.expected / row.teacherHours || 0).toFixed(1)
               : 0}{" "}
             TAs Rule
           </span>
@@ -246,10 +247,23 @@ export function Audit() {
       group: "TA (Nguồn 2)",
       sortable: true,
       type: "number",
-      width: 130,
-      render: (val: number) => (
+      width: 173,
+      headerStyle: {
+        paddingLeft: "0px",
+        paddingRight: "0px",
+        paddingBottom: "0px",
+        paddingTop: "0px",
+        height: "38.6667px",
+        lineHeight: "13.8px",
+      },
+      headerLabelStyle: {
+        fontWeight: "normal",
+        fontSize: "10px",
+        lineHeight: "12.8px",
+      },
+      render: (val: any) => (
         <span className="text-emerald-600 font-bold bg-emerald-50/50 px-2 py-1 rounded">
-          {val?.toFixed(2)}
+          {typeof val === "number" ? val.toFixed(2) : Number(val || 0).toFixed(2)}
         </span>
       ),
     },
@@ -289,6 +303,9 @@ export function Audit() {
       sortable: true,
       filterable: true,
       width: 200,
+      headerDivStyle: {
+        height: "46.0729px",
+      },
       render: (val: string, row: any) => (
         <div className="flex items-center gap-2 w-full pr-2">
           <span
@@ -698,7 +715,7 @@ export function Audit() {
       animate="visible"
       className="flex-1 flex flex-col min-h-0 bg-transparent px-8 mx-0 pt-0 pb-8 mb-0 gap-8 items-center overflow-hidden"
     >
-      <div className="flex flex-col lg:flex-row gap-8 w-full max-w-[1750px] flex-1 min-h-0 min-w-0 mt-0 px-0 pb-[6px]">
+      <div className="flex flex-col lg:flex-row gap-8 w-full max-w-[1750px] flex-1 min-h-0 min-w-0 mt-0 px-0 pb-[25px]">
         {/* Left Panel - Source Selection (Swapped back to left) */}
         {!isConfigHidden && (
           <motion.div
@@ -888,7 +905,7 @@ export function Audit() {
 
         {/* Right Panel - Results (Expanded to fill remaining space) */}
         <div className="flex-1 bg-slate-50/50 soft-card force-light flex flex-col min-h-0 min-w-0 mb-[6px] relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100">
-          <div className="px-6 md:px-8 py-5 flex flex-wrap gap-4 items-center justify-between border-b border-border bg-white shrink-0 relative z-50 rounded-t-3xl">
+          <div className="px-6 md:px-8 pt-[17px] pb-[15px] h-[88.3px] flex flex-wrap gap-4 items-center justify-between border-b border-border bg-white shrink-0 relative z-50 rounded-t-3xl">
             <div className="flex flex-wrap items-center gap-4">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -936,12 +953,12 @@ export function Audit() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="bg-slate-50 border-0 border-transparent m-0 p-3 rounded-2xl flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 h-[52.6px]">
+              <div className="bg-slate-50 border-0 border-transparent m-0 p-3 rounded-2xl flex items-center gap-3 w-[202px]">
                 <div className="w-8 h-8 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-primary shadow-sm shrink-0">
                   <Calendar className="w-4 h-4" />
                 </div>
-                <div className="flex flex-col pr-0 w-[250px] text-left">
+                <div className="flex flex-col pr-0 w-[202px] text-left text-[13px] leading-[20px] h-[32.6px]">
                   <span className="text-[0.6rem] font-bold text-slate-400 uppercase tracking-[0.15em] leading-none mb-1">
                     Kỳ đối soát
                   </span>
@@ -950,7 +967,7 @@ export function Audit() {
                     type="month"
                     value={selectedMonth}
                     onChange={handleMonthChange}
-                    className="relative bg-transparent border-none p-0 text-[13px] font-normal leading-[14px] text-slate-700 outline-none cursor-pointer uppercase tracking-widest w-[146px] hover:text-[#d1435b] transition-colors focus:ring-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                    className="relative bg-transparent border-none p-0 text-[13px] font-normal leading-[21px] text-slate-700 outline-none cursor-pointer uppercase tracking-widest w-[146px] hover:text-[#d1435b] transition-colors focus:ring-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>

@@ -4,7 +4,7 @@ import {
   ListChecks,
   Users,
   ChevronRight,
-  Coins,
+  Banknote,
   RefreshCw,
   Flower2,
   LayoutDashboard,
@@ -52,13 +52,18 @@ export function LeftSidebar({
       >
         <Link
           to="/"
-          className="flex items-center shrink-0 relative transition-transform hover:scale-110 gap-2"
+          className="flex items-center shrink-0 relative transition-all duration-300 hover:scale-105 gap-2 group"
         >
-          <Coins className="w-6 h-6 text-primary" />
-          <span className="flex items-end gap-0.5">
-            <span className="font-serif text-lg font-bold tracking-tight text-foreground leading-none">Pay</span>
-            <span className="font-script text-xl text-primary lowercase leading-none transform translate-y-0.5">roll</span>
-          </span>
+          <div className="relative">
+            <div className="absolute inset-0 bg-primary/20 rounded-full blur-md group-hover:bg-primary/40 transition-all duration-300" />
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white relative z-10 shadow-sm border border-white/50">
+              <Banknote className="w-5 h-5 text-white drop-shadow-sm" />
+            </div>
+          </div>
+          <div className="flex flex-col ml-1 justify-center relative">
+            <span className="font-display text-[22px] font-black tracking-widest text-foreground leading-none uppercase drop-shadow-sm">Payroll</span>
+            <span className="font-sans text-[9px] font-bold tracking-[0.25em] uppercase text-primary leading-none mt-1">Management</span>
+          </div>
         </Link>
 
         {/* Mobile Close Button */}

@@ -133,7 +133,7 @@ const RAW_MAPPINGS = [
   { l07: "HP0003.VIN", keys: ["HP3", "HP03", "Hai Phong 3"] },
   { l07: "QN0001.HLG", keys: ["HLG", "QN", "HL", "Ha Long", "QN01"] },
   { l07: "VIN001.CTG", keys: ["CTG", "VIN", "Vinh", "VIN01"] },
-  { l07: "VP0001.PCT", keys: ["PCT", "VP", "Vinh Phuc", "VP01"] },
+  { l07: "VP0001.PCT", keys: ["PCT", "VP01", "VP1", "Vinh Phuc", "VP0001"] },
   { l07: "TH0001.TPU", keys: ["TPU", "TH01.TPU", "MKT TH01.TPU", "Thanh Hoa", "TH01"] },
   { l07: "TN0001.LNQ", keys: ["LNQ", "TN01.LNQ", "MKT TN01.LNQ", "Thai Nguyen", "TN01"] },
   { l07: "PT0001.HVG", keys: ["HVG", "PT01.HVG", "MKT PT01.HVG", "Phu Tho", "PT01"] },
@@ -144,6 +144,16 @@ const RAW_MAPPINGS = [
   { l07: "MKT HP", keys: ["MKT HP"] },
 ];
 
+const normalizeForMatchLoose = (text: string): string => {
+  if (!text) return "";
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[đĐ]/g, "d")
+    .trim();
+};
+
 export const mapL07 = (rawL07: string): string => {
   if (!rawL07) return "";
   const l07Upper = rawL07.toUpperCase().trim();
@@ -151,9 +161,38 @@ export const mapL07 = (rawL07: string): string => {
 
   // Try keyword matching
   const normalized = normalizeForMatch(rawL07);
-  for (const m of RAW_MAPPINGS) {
-    if (m.keys.some(k => normalizeForMatch(k) === normalized || normalized.includes(normalizeForMatch(k)))) {
-      return m.l07;
+  
+  const allMappings: { l07: string; key: string, normKey: string }[] = [];
+  RAW_MAPPINGS.forEach((m) => {
+    m.keys.forEach((k) => {
+      allMappings.push({ l07: m.l07, key: k.toUpperCase(), normKey: normalizeForMatch(k) });
+    });
+  });
+
+  // Sort by length of normalized key to match longer, more specific names first
+  allMappings.sort((a, b) => b.normKey.length - a.normKey.length);
+
+  // Exact match first
+  for (const mapping of allMappings) {
+    if (mapping.normKey === normalized) return mapping.l07;
+  }
+
+  // Word boundary regex on original raw text
+  for (const mapping of allMappings) {
+    const escapedKey = mapping.key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(
+      `(?:^|[^A-Z0-9À-ỹa-z])(${escapedKey})(?:[^A-Z0-9À-ỹa-z]|$)`,
+      "i"
+    );
+    if (regex.test(rawL07)) {
+      return mapping.l07;
+    }
+  }
+
+  // Final fallback for longer keys only (length >= 4) with loose include to avoid matching "PH" in "Hai Phong"
+  for (const mapping of allMappings) {
+    if (mapping.normKey.length >= 4 && normalized.includes(mapping.normKey)) {
+      return mapping.l07;
     }
   }
   
@@ -161,30 +200,31 @@ export const mapL07 = (rawL07: string): string => {
 };
 
 export const getL07FromFileName = (fileName: string): string => {
-  const name = fileName.toUpperCase();
+  const normalized = normalizeForMatch(fileName);
   
-  const allMappings: { l07: string; key: string }[] = [];
+  const allMappings: { l07: string; key: string; normKey: string }[] = [];
   RAW_MAPPINGS.forEach((m) => {
     m.keys.forEach((k) => {
-      allMappings.push({ l07: m.l07, key: k.toUpperCase() });
+      allMappings.push({ l07: m.l07, key: k.toUpperCase(), normKey: normalizeForMatch(k) });
     });
   });
 
-  allMappings.sort((a, b) => b.key.length - a.key.length);
+  allMappings.sort((a, b) => b.normKey.length - a.normKey.length);
 
   for (const mapping of allMappings) {
     const escapedKey = mapping.key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(
-      `(?:^|[^A-Z0-9_À-ỹ])(${escapedKey})(?:[^A-Z0-9_À-ỹ]|$)`,
+      `(?:^|[^A-Z0-9À-ỹa-z])(${escapedKey})(?:[^A-Z0-9À-ỹa-z]|$)`,
       "i",
     );
-    if (regex.test(name)) {
+    if (regex.test(fileName)) {
       return mapping.l07;
     }
   }
 
+  // Fallback but only for longer keys to prevent bad substring matching
   for (const mapping of allMappings) {
-    if (name.includes(mapping.key)) {
+    if (mapping.normKey.length >= 4 && normalized.includes(mapping.normKey)) {
       return mapping.l07;
     }
   }

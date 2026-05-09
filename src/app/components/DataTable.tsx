@@ -60,6 +60,9 @@ export interface Column {
   headerSpanClassName?: string;
   cellClassName?: string;
   footerClassName?: string;
+  headerStyle?: React.CSSProperties;
+  headerDivStyle?: React.CSSProperties;
+  headerLabelStyle?: React.CSSProperties;
   render?: (value: any, row: any) => React.ReactNode;
   align?: "left" | "center" | "right";
 }
@@ -377,16 +380,6 @@ const DataRow = React.memo(
         className={`group ${selectable || onRowClick ? "cursor-pointer" : "cursor-default"} ${isSelected ? "bg-primary/[0.05]" : isRowActive ? "bg-primary/[0.03]" : isRowInRange ? "bg-primary/[0.015]" : striped ? (rIdx % 2 === 0 ? "bg-[var(--stripe-color1,white)]" : "bg-[var(--stripe-color2,white)]") : "bg-white"} relative`}
         style={undefined}
       >
-        {isSelected && (
-          <div
-            className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize z-50 hover:bg-rose-400 transition-colors"
-            onMouseDown={(e) => {
-              e.stopPropagation();
-              setIsResizing(true);
-            }}
-          />
-        )}
-
         {showRowNumber && (
           <td
             className="border-b border-r border-[#E2E8F0] select-none"
@@ -397,6 +390,15 @@ const DataRow = React.memo(
               minWidth: "50px",
             }}
           >
+            {isSelected && (
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize z-50 hover:bg-rose-400 transition-colors"
+                onMouseDown={(e) => {
+                  e.stopPropagation();
+                  setIsResizing(true);
+                }}
+              />
+            )}
             <div className="font-bold text-slate-400 text-xs">{rIdx + 1}</div>
           </td>
         )}
@@ -410,6 +412,15 @@ const DataRow = React.memo(
               boxShadow: isRowActive ? "inset 4px 0 0 #F08FA8" : undefined,
             }}
           >
+            {!showRowNumber && isSelected && (
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize z-50 hover:bg-rose-400 transition-colors"
+                onMouseDown={(e) => {
+                  e.stopPropagation();
+                  setIsResizing(true);
+                }}
+              />
+            )}
             <div className="flex items-center justify-center">
               {isSelected ? (
                 <div className="w-5 h-5 bg-[#F08FA8] rounded-md flex items-center justify-center border border-[#F08FA8] shadow-sm transition-transform active:scale-95">
@@ -465,6 +476,15 @@ const DataRow = React.memo(
                     : undefined,
               }}
             >
+              {!showRowNumber && !selectable && cIdx === 0 && isSelected && (
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-1 cursor-ns-resize z-50 hover:bg-rose-400 transition-colors"
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    setIsResizing(true);
+                  }}
+                />
+              )}
               {/* Range Borders */}
               {isInRange && selectionRange && (
                 <>
@@ -1742,10 +1762,11 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
             minWidth: widthStyle,
             maxWidth: widthStyle,
             textOverflow: "ellipsis",
+            ...col.headerStyle,
           }}
           title={col.label}
         >
-          <div className="flex items-center gap-2 justify-center h-full px-2">
+          <div className="flex items-center gap-2 justify-center h-full px-2" style={col.headerDivStyle}>
             <span
               className={`transition-colors flex-1 flex flex-col md:flex-row items-center justify-center gap-1 ${col.sortable !== false ? "hover:text-rose-600 active:scale-[0.98]" : ""} ${col.headerSpanClassName || ""}`}
               onClick={(e) => {
@@ -1755,7 +1776,7 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
                 }
               }}
             >
-              <span>{col.label}</span>
+              <span style={col.headerLabelStyle}>{col.label}</span>
               {col.sortable !== false && sortConfig?.key === col.key && (
                 <span className="shrink-0 text-rose-500 flex items-center justify-center">
                   {sortConfig.direction === "asc" ? (
@@ -1885,11 +1906,23 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
 
                       return groupings.map((g, idx) => {
                         if (g.group) {
+                          const isTaGroup = g.group === "TA (Nguồn 2)";
                           return (
                             <th
                               key={idx}
                               colSpan={g.count}
-                              className="bg-slate-50 border-b border-r border-border py-2 text-[0.6rem] font-black uppercase tracking-[0.15em] text-center text-primary/50"
+                              className="bg-slate-50 border-b border-r border-border py-2 text-center text-primary/50"
+                              style={isTaGroup ? {
+                                fontSize: "10.6px",
+                                fontWeight: "bold",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.15em"
+                              } : {
+                                fontSize: "0.6rem",
+                                fontWeight: 900,
+                                textTransform: "uppercase",
+                                letterSpacing: "0.15em"
+                              }}
                             >
                               {g.group}
                             </th>
@@ -2123,7 +2156,7 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
           </div>
 
           {/* Footer — Minimalist Style */}
-          <div className="border-t border-[#E2E8F0] flex items-center justify-between shrink-0 z-40 relative bg-white py-1.5 px-4 text-[0.65rem] uppercase tracking-wider font-semibold text-slate-500">
+          <div className="border-t border-[#E2E8F0] flex items-center justify-between shrink-0 z-40 relative bg-white pt-[10px] pb-[9px] px-4 text-[10.4px] uppercase tracking-wider font-semibold text-slate-500">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 hidden lg:flex">
                 {onRefresh && (
@@ -2147,7 +2180,8 @@ export const DataTable = React.memo(React.forwardRef<DataTableRef, DataTableProp
                     setVsScrollTop(0);
                     scrollContainerRef.current?.scrollTo({ top: 0 });
                   }}
-                  className="bg-transparent font-bold text-slate-700 outline-none cursor-pointer hover:text-primary transition-colors"
+                  className="bg-transparent font-bold text-slate-700 outline-none cursor-pointer hover:text-primary transition-colors text-[12px]"
+
                 >
                   <option value="50">50</option>
                   <option value="100">100</option>
